@@ -1,5 +1,5 @@
 import React from 'react';
-import { ClipboardCheck, AlertTriangle, MapPin, Users, Tool, Camera, Phone } from 'lucide-react';
+import { ClipboardCheck, AlertTriangle, MapPin, Users, PenTool as Tool, Camera, Phone } from 'lucide-react';
 import { EvacuationCenter } from '../../types';
 
 interface SummaryProps {
