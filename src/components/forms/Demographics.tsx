@@ -15,18 +15,60 @@ const Demographics: React.FC<DemographicsProps> = ({ data, onChange, selectedCen
       [field]: value
     });
   };
-  
-  const totalInside = 
-    data.insideMale + 
-    data.insideFemale + 
-    data.insideChildren;
-    
-  const totalOutside = 
-    data.outsideMale + 
-    data.outsideFemale + 
-    data.outsideChildren;
-    
-  const exceedsCapacity = selectedCenter?.capacity && totalInside > selectedCenter.capacity;
+
+  const DemographicField = ({ 
+    label, 
+    cumulativeField, 
+    currentField 
+  }: { 
+    label: string;
+    cumulativeField: keyof DemographicsType;
+    currentField: keyof DemographicsType;
+  }) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 border-b border-gray-200">
+      <div className="text-sm font-medium text-gray-700">{label}</div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs text-gray-500 mb-1">Cumulative</label>
+          <input
+            type="number"
+            min="0"
+            value={data[cumulativeField]}
+            onChange={(e) => handleChange(cumulativeField, parseInt(e.target.value) || 0)}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-dswd-blue focus:border-dswd-blue sm:text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-xs text-gray-500 mb-1">Current</label>
+          <input
+            type="number"
+            min="0"
+            value={data[currentField]}
+            onChange={(e) => handleChange(currentField, parseInt(e.target.value) || 0)}
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-dswd-blue focus:border-dswd-blue sm:text-sm"
+          />
+        </div>
+      </div>
+    </div>
+  );
+
+  const totalCurrent = 
+    data.infant_male_now +
+    data.infant_female_now +
+    data.toddler_male_now +
+    data.toddler_female_now +
+    data.preschool_male_now +
+    data.preschool_female_now +
+    data.school_age_male_now +
+    data.school_age_female_now +
+    data.teenage_male_now +
+    data.teenage_female_now +
+    data.adult_male_now +
+    data.adult_female_now +
+    data.elderly_male_now +
+    data.elderly_female_now;
+
+  const exceedsCapacity = selectedCenter?.capacity && totalCurrent > selectedCenter.capacity;
 
   return (
     <div className="space-y-6">
@@ -37,138 +79,129 @@ const Demographics: React.FC<DemographicsProps> = ({ data, onChange, selectedCen
           <span>Enter the number of evacuees by category</span>
         </div>
       </div>
-      
+
       {exceedsCapacity && (
         <div className="bg-dswd-red/10 border-l-4 border-dswd-red p-4 rounded-md">
           <div className="flex">
             <AlertTriangle size={20} className="text-dswd-red mr-2" />
             <div>
-              <p className="text-sm text-dswd-red font-medium">
-                Warning: Exceeding Capacity
-              </p>
+              <p className="text-sm text-dswd-red font-medium">Warning: Exceeding Capacity</p>
               <p className="text-sm text-gray-700">
-                The total number of evacuees inside ({totalInside}) exceeds the center's capacity ({selectedCenter?.capacity}).
+                The total number of current evacuees ({totalCurrent}) exceeds the center's capacity ({selectedCenter?.capacity}).
               </p>
             </div>
           </div>
         </div>
       )}
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Inside Evacuation Center */}
-        <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-          <div className="flex items-center mb-4">
+
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+        <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
+          <div className="flex items-center">
             <Users size={20} className="text-dswd-blue mr-2" />
-            <h4 className="text-md font-medium text-gray-900">Inside Evacuation Center</h4>
+            <h4 className="text-md font-medium text-gray-900">Demographic Breakdown</h4>
           </div>
-          
-          <div className="space-y-4">
+        </div>
+
+        {/* Infants */}
+        <DemographicField
+          label="Infants (0-1 yrs) - Male"
+          cumulativeField="infant_male_cumulative"
+          currentField="infant_male_now"
+        />
+        <DemographicField
+          label="Infants (0-1 yrs) - Female"
+          cumulativeField="infant_female_cumulative"
+          currentField="infant_female_now"
+        />
+
+        {/* Toddlers */}
+        <DemographicField
+          label="Toddlers (1-3 yrs) - Male"
+          cumulativeField="toddler_male_cumulative"
+          currentField="toddler_male_now"
+        />
+        <DemographicField
+          label="Toddlers (1-3 yrs) - Female"
+          cumulativeField="toddler_female_cumulative"
+          currentField="toddler_female_now"
+        />
+
+        {/* Preschool */}
+        <DemographicField
+          label="Preschool (4-5 yrs) - Male"
+          cumulativeField="preschool_male_cumulative"
+          currentField="preschool_male_now"
+        />
+        <DemographicField
+          label="Preschool (4-5 yrs) - Female"
+          cumulativeField="preschool_female_cumulative"
+          currentField="preschool_female_now"
+        />
+
+        {/* School Age */}
+        <DemographicField
+          label="School Age (6-12 yrs) - Male"
+          cumulativeField="school_age_male_cumulative"
+          currentField="school_age_male_now"
+        />
+        <DemographicField
+          label="School Age (6-12 yrs) - Female"
+          cumulativeField="school_age_female_cumulative"
+          currentField="school_age_female_now"
+        />
+
+        {/* Teenage */}
+        <DemographicField
+          label="Teenage (13-17 yrs) - Male"
+          cumulativeField="teenage_male_cumulative"
+          currentField="teenage_male_now"
+        />
+        <DemographicField
+          label="Teenage (13-17 yrs) - Female"
+          cumulativeField="teenage_female_cumulative"
+          currentField="teenage_female_now"
+        />
+
+        {/* Adults */}
+        <DemographicField
+          label="Adults (18-59 yrs) - Male"
+          cumulativeField="adult_male_cumulative"
+          currentField="adult_male_now"
+        />
+        <DemographicField
+          label="Adults (18-59 yrs) - Female"
+          cumulativeField="adult_female_cumulative"
+          currentField="adult_female_now"
+        />
+
+        {/* Elderly */}
+        <DemographicField
+          label="Elderly (60+ yrs) - Male"
+          cumulativeField="elderly_male_cumulative"
+          currentField="elderly_male_now"
+        />
+        <DemographicField
+          label="Elderly (60+ yrs) - Female"
+          cumulativeField="elderly_female_cumulative"
+          currentField="elderly_female_now"
+        />
+
+        {/* Summary */}
+        <div className="bg-gray-50 p-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Adult Males</label>
-              <input
-                type="number"
-                min="0"
-                value={data.insideMale}
-                onChange={(e) => handleChange('insideMale', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dswd-blue focus:border-dswd-blue sm:text-sm"
-              />
+              <h5 className="text-sm font-medium text-gray-700 mb-2">Current Evacuees</h5>
+              <div className="text-2xl font-bold text-dswd-blue">{totalCurrent}</div>
             </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Adult Females</label>
-              <input
-                type="number"
-                min="0"
-                value={data.insideFemale}
-                onChange={(e) => handleChange('insideFemale', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dswd-blue focus:border-dswd-blue sm:text-sm"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Children (0-17 years)</label>
-              <input
-                type="number"
-                min="0"
-                value={data.insideChildren}
-                onChange={(e) => handleChange('insideChildren', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-dswd-blue focus:border-dswd-blue sm:text-sm"
-              />
-            </div>
-            
-            <div className="pt-2 border-t border-blue-200">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 font-medium">Total Inside:</span>
-                <span className={`text-lg font-bold ${exceedsCapacity ? 'text-dswd-red' : 'text-dswd-blue'}`}>
-                  {totalInside}
-                </span>
-              </div>
-              {selectedCenter?.capacity && (
-                <div className="flex justify-between items-center mt-1 text-sm">
-                  <span className="text-gray-500">Center Capacity:</span>
-                  <span className="text-gray-700 font-medium">{selectedCenter.capacity}</span>
+            {selectedCenter?.capacity && (
+              <div>
+                <h5 className="text-sm font-medium text-gray-700 mb-2">Center Capacity</h5>
+                <div className={`text-2xl font-bold ${exceedsCapacity ? 'text-dswd-red' : 'text-green-600'}`}>
+                  {selectedCenter.capacity}
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-        
-        {/* Outside Evacuation Center */}
-        <div className="bg-amber-50 p-4 rounded-lg border border-amber-100">
-          <div className="flex items-center mb-4">
-            <Users size={20} className="text-amber-600 mr-2" />
-            <h4 className="text-md font-medium text-gray-900">Outside Evacuation Center</h4>
-          </div>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Adult Males</label>
-              <input
-                type="number"
-                min="0"
-                value={data.outsideMale}
-                onChange={(e) => handleChange('outsideMale', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Adult Females</label>
-              <input
-                type="number"
-                min="0"
-                value={data.outsideFemale}
-                onChange={(e) => handleChange('outsideFemale', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Children (0-17 years)</label>
-              <input
-                type="number"
-                min="0"
-                value={data.outsideChildren}
-                onChange={(e) => handleChange('outsideChildren', parseInt(e.target.value) || 0)}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-amber-500 focus:border-amber-500 sm:text-sm"
-              />
-            </div>
-            
-            <div className="pt-2 border-t border-amber-200">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-700 font-medium">Total Outside:</span>
-                <span className="text-lg font-bold text-amber-600">{totalOutside}</span>
               </div>
-            </div>
+            )}
           </div>
-        </div>
-      </div>
-      
-      {/* Summary */}
-      <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
-        <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-700">Total Evacuees:</span>
-          <span className="text-xl font-bold text-dswd-blue-dark">{totalInside + totalOutside}</span>
         </div>
       </div>
     </div>

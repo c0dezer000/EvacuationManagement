@@ -1,45 +1,45 @@
-export interface Incident {
-  id: string;
-  name: string;
-  type: string;
-  severity: 'Low' | 'Medium' | 'High';
-  date: string;
-  location: string;
-  evacuationCenters: number;
-  totalEvacuees: number;
-  status: 'Active' | 'Closed' | 'Ongoing' | 'Critical';
-}
-
-export interface EvacuationCenter {
-  id: string;
-  incidentId: string;
-  name: string;
-  barangay: string;
-  city: string;
-  province: string;
-  capacity: number;
-  evacueesInside: number;
-  evacueesOutside: number;
-  status: 'Active' | 'Inactive' | 'Damaged' | 'Converted';
-  latitude: number;
-  longitude: number;
-  lastUpdated: string;
-  facilities: {
-    water: 'Functional' | 'Needs Repair' | 'Missing';
-    electricity: 'Functional' | 'Needs Repair' | 'Missing';
-    toilets: 'Functional' | 'Needs Repair' | 'Missing';
-    kitchen: 'Functional' | 'Needs Repair' | 'Missing';
-    medicalArea: 'Functional' | 'Needs Repair' | 'Missing';
-  };
-}
-
 export interface Demographics {
-  insideMale: number;
-  insideFemale: number;
-  insideChildren: number;
-  outsideMale: number;
-  outsideFemale: number;
-  outsideChildren: number;
+  // Infants (0-1 yrs)
+  infant_male_cumulative: number;
+  infant_male_now: number;
+  infant_female_cumulative: number;
+  infant_female_now: number;
+
+  // Toddlers (1-3 yrs)
+  toddler_male_cumulative: number;
+  toddler_male_now: number;
+  toddler_female_cumulative: number;
+  toddler_female_now: number;
+
+  // Preschool (4-5 yrs)
+  preschool_male_cumulative: number;
+  preschool_male_now: number;
+  preschool_female_cumulative: number;
+  preschool_female_now: number;
+
+  // School Age (6-12 yrs)
+  school_age_male_cumulative: number;
+  school_age_male_now: number;
+  school_age_female_cumulative: number;
+  school_age_female_now: number;
+
+  // Teenage (13-17 yrs)
+  teenage_male_cumulative: number;
+  teenage_male_now: number;
+  teenage_female_cumulative: number;
+  teenage_female_now: number;
+
+  // Adults (18-59 yrs)
+  adult_male_cumulative: number;
+  adult_male_now: number;
+  adult_female_cumulative: number;
+  adult_female_now: number;
+
+  // Elderly (60+ yrs)
+  elderly_male_cumulative: number;
+  elderly_male_now: number;
+  elderly_female_cumulative: number;
+  elderly_female_now: number;
 }
 
 export interface SectoralGroup {
@@ -75,4 +75,41 @@ export interface Media {
     latitude: number;
     longitude: number;
   };
+}
+
+export interface EvacuationCenter {
+  id: string;
+  incidentId: string;
+  name: string;
+  barangay: string;
+  city: string;
+  province: string;
+  capacity: number;
+  status: 'Active' | 'Inactive' | 'Damaged' | 'Converted';
+  latitude: number;
+  longitude: number;
+  lastUpdated: string;
+  demographics: Demographics;
+  sectoralGroups: SectoralGroup[];
+  facilities: {
+    water: 'Functional' | 'Needs Repair' | 'Missing';
+    electricity: 'Functional' | 'Needs Repair' | 'Missing';
+    toilets: 'Functional' | 'Needs Repair' | 'Missing';
+    kitchen: 'Functional' | 'Needs Repair' | 'Missing';
+    medicalArea: 'Functional' | 'Needs Repair' | 'Missing';
+  };
+  contactPersons: ContactPerson[];
+  media: Media[];
+}
+
+export interface Incident {
+  id: string;
+  name: string;
+  type: string;
+  severity: 'Low' | 'Medium' | 'High';
+  date: string;
+  location: string;
+  evacuationCenters: number;
+  totalEvacuees: number;
+  status: 'Active' | 'Closed' | 'Ongoing' | 'Critical';
 }
