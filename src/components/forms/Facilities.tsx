@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tool, AlertTriangle, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
+import { PenTool as Tool, AlertTriangle, CheckCircle, XCircle, HelpCircle } from 'lucide-react';
 
 interface FacilityStatus {
   status: 'Functional' | 'Needs Repair' | 'Missing';
