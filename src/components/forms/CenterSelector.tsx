@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Plus, MapPin } from 'lucide-react';
 import { EvacuationCenter } from '../../types';
+import RegisterCenter from './RegisterCenter';
 
 interface CenterSelectorProps {
   centers: EvacuationCenter[];
@@ -11,6 +12,7 @@ interface CenterSelectorProps {
 const CenterSelector: React.FC<CenterSelectorProps> = ({ centers, onSelect, onAddNew }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCenter, setSelectedCenter] = useState<EvacuationCenter | null>(null);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
 
   const filteredCenters = centers.filter(center => 
     center.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -24,10 +26,26 @@ const CenterSelector: React.FC<CenterSelectorProps> = ({ centers, onSelect, onAd
   };
 
   const handleAddNew = () => {
+    setShowRegisterForm(true);
     setSelectedCenter(null);
     onSelect(null);
     onAddNew();
   };
+
+  const handleRegisterSubmit = (data: any) => {
+    // Handle the new center registration
+    console.log('New center data:', data);
+    setShowRegisterForm(false);
+  };
+
+  if (showRegisterForm) {
+    return (
+      <RegisterCenter
+        onSubmit={handleRegisterSubmit}
+        onCancel={() => setShowRegisterForm(false)}
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
