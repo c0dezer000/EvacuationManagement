@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { MapPin, Users, Tool, Camera, Phone, Download, Printer } from 'lucide-react';
+import { MapPin, Users, PenTool as Tool, Camera, Phone, Download, Printer } from 'lucide-react';
 import { useIncidents } from '../context/IncidentContext';
 import Breadcrumb from '../components/ui/Breadcrumb';
 import StatusBadge from '../components/ui/StatusBadge';
