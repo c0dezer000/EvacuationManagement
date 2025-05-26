@@ -77,7 +77,7 @@ const EvacuationCenterTable: React.FC<EvacuationCenterTableProps> = ({ centers, 
                     <Edit size={18} />
                   </Link>
                   <Link 
-                    to={`/reports/${center.id}`}
+                    to={`/center/${center.id}`}
                     className="text-dswd-blue hover:text-dswd-blue-dark"
                     title="View Report"
                   >
